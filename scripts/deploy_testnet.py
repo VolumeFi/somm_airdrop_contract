@@ -1,4 +1,4 @@
-from brownie import web3, Airdrop, ERC20, accounts, Contract
+from brownie import Airdrop, ERC20, accounts
 
 def main():
     acct = accounts.load("myaccount")
