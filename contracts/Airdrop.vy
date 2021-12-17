@@ -13,9 +13,9 @@ interface IERC20:
     def balanceOf(owner: address) -> uint256: view
 
 @external
-def __init__(_somm_token: address, _merkle_root: bytes32, _gravity_bridge: address):
+def __init__(_somm_token: address, _merkle_root: bytes32, _gravity_bridge: address, _duration: uint256):
     SOMM_TOKEN = _somm_token
-    DEADLINE = block.timestamp + 60 * 60 * 24 * 30 * 6 # 6 months
+    DEADLINE = block.timestamp + _duration
     GRAVITY_BRIDGE = _gravity_bridge
     MERKLE_ROOT = _merkle_root
 
