@@ -1,4 +1,4 @@
-# @version 0.3.0
+# @version 0.3.1
 
 event Transfer:
     _from: indexed(address)
@@ -13,15 +13,25 @@ event Approval:
 balanceOf: public(HashMap[address, uint256])
 allowance: public(HashMap[address, HashMap[address, uint256]])
 totalSupply: public(uint256)
-name: public(String[256])
-symbol: public(String[32])
+name: immutable(String[256])
+symbol: immutable(String[32])
 
 @external
 def __init__(name_: String[256], symbol_: String[32]):
-    self.name = name_
-    self.symbol = symbol_
-    self.balanceOf[msg.sender] = 10 ** 6 * 10 ** 18
-    self.totalSupply = 10 ** 6 * 10 ** 18
+    name = name_
+    symbol = symbol_
+    self.balanceOf[msg.sender] = 5 * 10 ** 6 * 10 ** 18
+    self.totalSupply = 5 * 10 ** 6 * 10 ** 18
+
+@external
+@view
+def name() -> String[256]:
+    return name
+
+@external
+@view
+def symbol() -> String[32]:
+    return symbol
 
 @external
 @pure
