@@ -11,7 +11,7 @@ from brownie import web3, accounts, Airdrop, ERC20
 @pytest.fixture(scope="session")
 def AirdropContract(ERC20Contract, merkle_tree):
     airdrop = Airdrop.deploy(ERC20Contract, merkle_tree.get_merkle_root(), accounts[3], {'from':accounts[0]})
-    ERC20Contract.transfer(airdrop, 10 ** 6 * 10 ** 18)
+    ERC20Contract.transfer(airdrop, 5 * 10 ** 6 * 10 ** 18)
     return airdrop
 
 @pytest.fixture(scope="session")

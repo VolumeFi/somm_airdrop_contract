@@ -1,23 +1,23 @@
-# @version ^0.3.0
+# @version 0.3.1
 
 TRANSFER_MID: constant(Bytes[4]) = method_id("transfer(address,uint256)")
 MERKLE_TREE_DEPTH: constant(uint256) = 15
 
-somm_token: public(address)
+SOMM_TOKEN: immutable(address)
 received: public(HashMap[address, bool])
-deadline: public(uint256)
-gravity_bridge: public(address)
-merkle_root: public(bytes32)
+DEADLINE: immutable(uint256)
+GRAVITY_BRIDGE: immutable(address)
+MERKLE_ROOT: immutable(bytes32)
 
 interface IERC20:
     def balanceOf(owner: address) -> uint256: view
 
 @external
 def __init__(_somm_token: address, _merkle_root: bytes32, _gravity_bridge: address):
-    self.somm_token = _somm_token
-    self.deadline = block.timestamp + 60 * 60 * 24 * 30 * 6 # 6 months
-    self.gravity_bridge = _gravity_bridge
-    self.merkle_root = _merkle_root
+    SOMM_TOKEN = _somm_token
+    DEADLINE = block.timestamp + 60 * 60 * 24 * 30 * 6 # 6 months
+    GRAVITY_BRIDGE = _gravity_bridge
+    MERKLE_ROOT = _merkle_root
 
 @internal
 def _safe_transfer(_token: address, _to: address, _value: uint256):
@@ -47,18 +47,37 @@ def verify(proof:bytes32[MERKLE_TREE_DEPTH], root: bytes32, leaf: bytes32) -> bo
     return computed_hash == root
 
 @external
+@view
+def somm_token() -> address:
+    return SOMM_TOKEN
+
+@external
+@view
+def gravity_bridge() -> address:
+    return GRAVITY_BRIDGE
+
+@external
+@view
+def merkle_root() -> bytes32:
+    return MERKLE_ROOT
+
+@external
+@view
+def deadline() -> uint256:
+    return DEADLINE
+
+@external
 def claim(receiver: address, amount: uint256, merkle_proof: bytes32[MERKLE_TREE_DEPTH]):
-    assert block.timestamp <= self.deadline
+    assert block.timestamp <= DEADLINE
     assert not self.received[receiver], "Already received"
     node: bytes32 = keccak256(concat(slice(convert(receiver, bytes32), 12, 20), convert(amount, bytes32)))
-    assert self.verify(merkle_proof, self.merkle_root, node), "Invalid proof"
-    self._safe_transfer(self.somm_token, receiver, amount)
+    assert self.verify(merkle_proof, MERKLE_ROOT, node), "Invalid proof"
+    self._safe_transfer(SOMM_TOKEN, receiver, amount)
     self.received[receiver] = True
 
 @external
 def return_token():
-    assert self.deadline < block.timestamp, "Not finished"
-    _token: address = self.somm_token
-    bal: uint256 = IERC20(_token).balanceOf(self)
+    assert DEADLINE < block.timestamp, "Not finished"
+    bal: uint256 = IERC20(SOMM_TOKEN).balanceOf(self)
     assert bal > 0, "Insufficient balance"
-    self._safe_transfer(_token, self.gravity_bridge, bal)
+    self._safe_transfer(SOMM_TOKEN, GRAVITY_BRIDGE, bal)
