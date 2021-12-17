@@ -72,6 +72,6 @@ def test_return_token_test(ERC20Contract, AirdropContract, merkle_tree, reward_a
     with brownie.reverts("Not finished"):
         AirdropContract.return_token()
     chain = Chain()
-    chain.sleep(60 * 60 * 24 * 30 * 6)
+    chain.sleep(DURATION)
     AirdropContract.return_token()
     assert ERC20Contract.balanceOf(accounts[3]) == init_balance + withdraw_balance
