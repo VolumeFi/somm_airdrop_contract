@@ -33,7 +33,7 @@ Transfer `SOMM` token to the airdrop address.
 ### Running the Tests
 
 ```bash
-brownie test
+brownie test -s
 ```
 
 
