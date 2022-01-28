@@ -25,11 +25,11 @@ def reward_amounts():
     with open("somm_app_rewards.json") as openfile:
         somm_app_rewards = Counter(json.load(openfile))
         for key in somm_app_rewards:
-            somm_app_rewards[key] = int(Decimal(str(somm_app_rewards[key])) * 10 ** 18)
+            somm_app_rewards[key] = int(Decimal(str(somm_app_rewards[key])))
     with open("uniswap_v3_pool_rewards.json") as openfile:
         uniswap_pool_rewards = Counter(json.load(openfile))
         for key in uniswap_pool_rewards:
-            uniswap_pool_rewards[key] = int(Decimal(str(uniswap_pool_rewards[key])) * 10 ** 18)
+            uniswap_pool_rewards[key] = int(Decimal(str(uniswap_pool_rewards[key])))
     final_rewards = dict(uniswap_pool_rewards + somm_app_rewards)
     final_rewards = OrderedDict(sorted(final_rewards.items()))
     return final_rewards
