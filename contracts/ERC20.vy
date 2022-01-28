@@ -13,25 +13,25 @@ event Approval:
 balanceOf: public(HashMap[address, uint256])
 allowance: public(HashMap[address, HashMap[address, uint256]])
 totalSupply: public(uint256)
-name: immutable(String[256])
-symbol: immutable(String[32])
+NAME: immutable(String[256])
+SYMBOL: immutable(String[32])
 
 @external
 def __init__(name_: String[256], symbol_: String[32]):
-    name = name_
-    symbol = symbol_
+    NAME = name_
+    SYMBOL = symbol_
     self.balanceOf[msg.sender] = 5 * 10 ** 6 * 10 ** 18
     self.totalSupply = 5 * 10 ** 6 * 10 ** 18
 
 @external
 @view
 def name() -> String[256]:
-    return name
+    return NAME
 
 @external
 @view
 def symbol() -> String[32]:
-    return symbol
+    return SYMBOL
 
 @external
 @pure
