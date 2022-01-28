@@ -8,7 +8,7 @@ from MerkleTree import *
 import brownie
 from brownie import web3, accounts, Airdrop, ERC20
 
-DURATION = 60 * 60 * 24 * 30 * 6 # 6 months
+DURATION = 60 * 60 * 24 * 30 * 3 # 3 months
 
 @pytest.fixture(scope="session")
 def AirdropContract(ERC20Contract, merkle_tree):
